@@ -1,0 +1,11 @@
+AsciiComments:
+  Enabled: false
+
+PercentLiteralDelimiters:
+  Enabled: false
+
+UnneededPercentQ:
+  Enabled: false
+
+LineLength:
+  Max: 119
