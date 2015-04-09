@@ -27,8 +27,8 @@ require 'logger'
 TorgApi.establish_connection(
   adapter: 'oracle_enhanced',
   database: 'ksazd_backup',
-  username: 'mardok',
-  password: 'mardok'
+  username: 'user',
+  password: 'pass'
 )
 
 # Логгер если нужен
