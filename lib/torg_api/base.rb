@@ -3,6 +3,7 @@ require 'torg_api/models'
 module TorgApi
   class Base
     include TorgApi::Constants
+    extend TorgApi::Constants
     REMOVE_HASH_ATTRS = [:@id]
 
     def to_h
