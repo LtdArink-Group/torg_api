@@ -135,6 +135,10 @@ module TorgApi
         TorgApi::Models::Bidder.where(tender_id: id, contractor_id: contractor_id).first.try(:id)
       end
 
+      def find_lot(num)
+        Lot.find(id, num)
+      end
+
       class << self
         # Поиск закупки по id
         # @param id [Integer] id закупки
