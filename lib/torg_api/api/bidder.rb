@@ -14,7 +14,7 @@ module TorgApi
         # @param contractor_id [Integer] id контрагента
         # @param tender_id [Integer] id закупки
         # @param date_offer [Time] Дата и время регистрации конверта участника
-        # @return [Integer]
+        # @return [Bidder]
         def create(contractor_id, tender_id, date_offer = nil)
           b = nil
           TorgApi::Models::Bidder.transaction do
@@ -32,21 +32,31 @@ module TorgApi
             )
           end
 
-          b.id
+          b.to_api
         end
+      end
+
+      # Проверяет, есть ли файл с таким именем у данного участника
+      # @param file_name [String] Имя файла во внешней системе
+      # return [Boolean]
+      def file_exists?(file_name)
+        bidder = TorgApi::Models::Bidder.find(id)
+        bidder.bidder_files.file_exists?(file_name)
       end
 
       # Добавляет файл предложения участника к нему
       # @param file [String] имя файла и путь к нему
+      # @param name [String] имя файла во внешней системе
       # @param note [String] Комментарии
       # @return Nothing
-      def add_file(file, note)
+      def add_file(file, name = nil, note = nil)
         TorgApi::Models::BidderFile.transaction do
           tender_file = TorgApi::Models::TenderFile.create(
             area_id: TenderFileArea::BIDDER,
             year: Date.current.year,
             document: File.open(file),
-            user_id: EtpUsers::B2B_CENTER
+            user_id: EtpUsers::B2B_CENTER,
+            external_filename: name
           )
           TorgApi::Models::BidderFile.create!(
             bidder_id: id,

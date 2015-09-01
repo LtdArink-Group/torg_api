@@ -131,8 +131,11 @@ module TorgApi
       # @return [Integer] Часовой пояс проведения закупки
       attr_accessor :local_time_zone_id
 
+      # Поиск участника по его идентификатору в справочнике
+      # @param contractor_id [Integer] Идентификатор котрагента в справочнике
+      # return [Bidder] возвращает объект участника
       def find_bidder(contractor_id)
-        TorgApi::Models::Bidder.where(tender_id: id, contractor_id: contractor_id).first.try(:id)
+        TorgApi::Models::Bidder.where(tender_id: id, contractor_id: contractor_id).first.try(:to_api)
       end
 
       def find_lot(num)
