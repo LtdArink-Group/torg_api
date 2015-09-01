@@ -1,3 +1,5 @@
+require 'carrierwave'
+require 'carrierwave/orm/activerecord'
 require 'torg_api/models'
 
 module TorgApi

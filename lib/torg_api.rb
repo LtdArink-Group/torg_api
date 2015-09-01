@@ -4,6 +4,8 @@ require 'torg_api/constants'
 require 'torg_api/base'
 require 'torg_api/api'
 
+CarrierWave::SanitizedFile.sanitize_regexp = /[^[:word:]\.\-\+]/
+
 module TorgApi
   def self.establish_connection(spec = nil)
     ActiveRecord::Base.establish_connection(spec)
