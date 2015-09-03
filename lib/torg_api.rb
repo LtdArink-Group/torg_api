@@ -3,6 +3,7 @@ require 'torg_api/version'
 require 'torg_api/constants'
 require 'torg_api/base'
 require 'torg_api/api'
+require 'torg_api/settings'
 
 CarrierWave::SanitizedFile.sanitize_regexp = /[^[:word:]\.\-\+]/
 

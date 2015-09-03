@@ -56,14 +56,15 @@ module TorgApi
             .where(inn: inn)
             .where(next_id: nil)
             .order("#{DECODE_STATUS_ORDER}, updated_at desc")
-            .pluck('id')
+            .first
+            .try(:to_api)
         end
 
         # Создаёт контрагента
         # @param hash [Hash] хэш ответа веб-сервиса B2B
         # @param user [Integer] id автора
-        # @return [Integer] id созданного объекта
-        def create_from_b2b(hash, user)
+        # @return Contractor
+        def create_from_b2b(hash)
           c = Contractor.new
           c.name = hash[:org_name_short]
           c.fullname = hash[:org_name]
@@ -75,14 +76,15 @@ module TorgApi
           c.status = 0 # enum status: { orig: 0, active: 1, old: 2, inactive: 3 }
           c.form = extract_form(hash[:bank_inn])
           c.legal_addr = hash[:jury_address]
-          c.user_id = user
+          c.user_id = Settings.service_user[:id]
           c.is_resident = extract_resident(hash[:country])
           c.is_dzo = nil
           c.is_sme = hash[:is_smb]
           c.jsc_form_id = nil
           c.sme_type_id = nil
 
-          TorgApi::Models::Contractor.create!(c.to_h).id
+          c.id = TorgApi::Models::Contractor.create(c.to_h).id
+          c
         end
 
         def extract_ownership(org_name_short)

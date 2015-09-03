@@ -19,13 +19,13 @@ module TorgApi
       # @return [Integer] FileSize
       attr_accessor :file_size
       class << self
-        def create_from_b2b(hash, area, file_size, user_id)
+        def create_from_b2b(hash, area, file_size)
           mime_types = MIME::Types.type_for(hash[:name])
           file = TenderFile.new
           file.area_id = area
           file.year = Date.current.year
           file.document = hash[:title]
-          file.user_id = user_id
+          file.user_id = Settings.service_user[:id]
           file.external_filename = hash[:name]
           file.content_type = mime_types.empty? ? 'text/plain' : mime_types.first.content_type
           file.file_size = file_size

@@ -55,7 +55,7 @@ module TorgApi
             area_id: TenderFileArea::BIDDER,
             year: Date.current.year,
             document: File.open(file),
-            user_id: EtpUsers::B2B_CENTER,
+            user_id: Settings.service_user[:id],
             external_filename: name
           )
           TorgApi::Models::BidderFile.create!(

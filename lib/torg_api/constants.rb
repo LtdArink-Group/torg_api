@@ -15,9 +15,5 @@ module TorgApi
       TENDER = 2
       BIDDER = 3
     end
-
-    module EtpUsers
-      B2B_CENTER = 411
-    end
   end
 end
