@@ -1,12 +1,17 @@
 module TorgApi
   module Models
     class Tender < TorgDatabase
+      belongs_to :tender_type, class_name: 'Dictionary'
+
+      delegate :name, to: :tender_type, prefix: true
+
       def to_api
         t = TorgApi::Api::Tender.new
         t.id = id
         t.num = num
         t.name = name
         t.tender_type_id = tender_type_id
+        t.tender_type_name = tender_type_name
         t.tender_type_explanations = tender_type_explanations
         t.etp_address_id = etp_address_id
         t.commission_id = commission_id
