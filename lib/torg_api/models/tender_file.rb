@@ -1,6 +1,6 @@
 module TorgApi
   module Models
-    class TenderFile < ActiveRecord::Base
+    class TenderFile < TorgDatabase
       mount_uploader :document, TenderFileUploader
 
       before_save :update_file_attributes

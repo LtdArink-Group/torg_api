@@ -1,6 +1,6 @@
 module TorgApi
   module Models
-    class Contractor < ActiveRecord::Base
+    class Contractor < TorgDatabase
       def to_api
         c = TorgApi::Api::Contractor.new
         c.id = id

@@ -1,7 +1,7 @@
 module TorgApi
   module Models
     # TORG Offer model
-    class Offer < ActiveRecord::Base
+    class Offer < TorgDatabase
       has_many :offer_specifications
 
       def self.for_bid_lot_num(bidder_id, lot_id, num)

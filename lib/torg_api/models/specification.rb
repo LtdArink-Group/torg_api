@@ -1,6 +1,6 @@
 module TorgApi
   module Models
-    class Specification < ActiveRecord::Base
+    class Specification < TorgDatabase
     end
   end
 end

@@ -1,6 +1,6 @@
 module TorgApi
   module Models
-    class Bidder < ActiveRecord::Base
+    class Bidder < TorgDatabase
       has_many :bidder_files
 
       def to_api

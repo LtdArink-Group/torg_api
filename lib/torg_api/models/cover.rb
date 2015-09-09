@@ -1,6 +1,6 @@
 module TorgApi
   module Models
-    class Cover < ActiveRecord::Base
+    class Cover < TorgDatabase
     end
   end
 end

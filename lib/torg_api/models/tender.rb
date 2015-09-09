@@ -1,6 +1,6 @@
 module TorgApi
   module Models
-    class Tender < ActiveRecord::Base
+    class Tender < TorgDatabase
       def to_api
         t = TorgApi::Api::Tender.new
         t.id = id

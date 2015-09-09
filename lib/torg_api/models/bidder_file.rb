@@ -1,6 +1,6 @@
 module TorgApi
   module Models
-    class BidderFile < ActiveRecord::Base
+    class BidderFile < TorgDatabase
       belongs_to :tender_file
 
       def self.file_exists?(file_name)
