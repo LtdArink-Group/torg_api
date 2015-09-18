@@ -1,3 +1,4 @@
+require 'torg_api/models/tender_file_uploader'
 module TorgApi
   module Models
     class TenderFile < TorgDatabase
