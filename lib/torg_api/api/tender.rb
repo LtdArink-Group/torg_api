@@ -30,6 +30,8 @@ module TorgApi
       attr_accessor :bid_place
       # @return [Integer] Ответственный пользователь
       attr_accessor :user_id
+      # @return [String] Email пользователя
+      attr_accessor :user_email
       # @return [Integer] Номер закупки на ООС
       attr_accessor :oos_num
       # @return [Integer] Идентификатор закупки на ООС

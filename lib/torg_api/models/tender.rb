@@ -2,8 +2,10 @@ module TorgApi
   module Models
     class Tender < TorgDatabase
       belongs_to :tender_type, class_name: 'Dictionary'
+      belongs_to :user
 
       delegate :name, to: :tender_type, prefix: true
+      delegate :email, to: :user, prefix: true
 
       def to_api
         t = TorgApi::Api::Tender.new
@@ -21,6 +23,7 @@ module TorgApi
         t.bid_date = bid_date
         t.bid_place = bid_place
         t.user_id = user_id
+        t.user_email = user_email
         t.oos_num = oos_num
         t.oos_id = oos_id
         t.etp_num = etp_num
