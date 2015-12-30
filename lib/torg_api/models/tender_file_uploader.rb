@@ -23,6 +23,14 @@ class TenderFileUploader < CarrierWave::Uploader::Base
     "uploads/#{model.year}/#{model.area_id}/#{model.id}"
   end
 
+  def move_to_store
+    true
+  end
+
+  def move_to_cache
+    true
+  end
+
   # Provide a default URL as a default if there hasn't been a file uploaded:
   # def default_url
   #   # For Rails 3.1+ asset pipeline compatibility:
