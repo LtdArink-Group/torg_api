@@ -15,33 +15,56 @@ module TorgApi
         # @param tender_id [Integer] id закупки
         # @param date_offer [Time] Дата и время регистрации конверта участника
         # @return [Bidder]
+
         def create(contractor_id, tender_id, date_offer = nil)
-          b = nil
-          TorgApi::Models::Bidder.transaction do
-            b = TorgApi::Models::Bidder.create!(
-              tender_id: tender_id,
-              contractor_id: contractor_id
-            )
+          responce_b = JSON.parse(
+            RestClient.post(
+              [Settings.torg_url[:host], "tenders", tender_id, "bidders"].join('/'),
+              bidder: {
+                tender_id: tender_id,
+                contractor_id: contractor_id,
+                covers_attributes: {
+                  '0' => {
+                    _destroy: false,
+                    compound_register_time_attributes: {
+                      date: date_offer && date_offer.strftime('%d.%m.%Y'),
+                      time: date_offer && date_offer.strftime('%H:%M')
+                    },
+                    type_id: CoverLabels::REQUEST,
+                    delegate: 'B2B-Center',
+                    provision: 'Электронный конверт'
+                  }
+                }
+              },
+              accept: :json,
+              content_type: :json,
+              format: :json
+            ),
+            symbolize_names: true
+          )
 
-            TorgApi::Models::Cover.create!(
-              bidder_id: b.id,
-              register_time: date_offer,
-              type_id: CoverLabels::REQUEST,
-              delegate: 'B2B-Center',
-              provision: 'Электронный конверт'
-            )
-          end
-
-          b.to_api
+          b = new
+          b.tender_id = responce_b[:tender_id]
+          b.contractor_id = responce_b[:contractor_id]
+          b.id = responce_b[:id]
+          b
         end
       end
-
       # Проверяет, есть ли файл с таким именем у данного участника
       # @param file_name [String] Имя файла во внешней системе
       # return [Boolean]
       def file_exists?(file_name)
-        bidder = TorgApi::Models::Bidder.find(id)
-        bidder.bidder_files.file_exists?(file_name)
+        responce = JSON.parse(
+          RestClient.get(
+            [Settings.torg_url[:host], "tenders", tender_id, "bidders", id, "file_exists"].join('/'),
+              params: { file_name: file_name },
+              accept: :json,
+              content_type: :json,
+              format: :json
+          ),
+          symbolize_names: true
+        )
+        responce[:exists]
       end
 
       # Добавляет файл предложения участника к нему
@@ -50,20 +73,41 @@ module TorgApi
       # @param note [String] Комментарии
       # @return Nothing
       def add_file(file, name = nil, note = nil)
-        TorgApi::Models::BidderFile.transaction do
-          tender_file = TorgApi::Models::TenderFile.create(
-            area_id: TenderFileArea::BIDDER,
-            year: Date.current.year,
-            document: File.open(file),
-            user_id: Settings.service_user[:id],
-            external_filename: name
-          )
-          TorgApi::Models::BidderFile.create!(
-            bidder_id: id,
-            tender_file_id: tender_file.id,
-            note: note
-          )
-        end
+        responce_f = JSON.parse(
+          RestClient.post(
+            [Settings.torg_url[:host], "tender_files"].join('/'),
+            tender_file: {
+              area_id: TenderFileArea::BIDDER,
+              year: Date.current.year,
+              document: File.open(file),
+              external_filename: name
+            },
+            accept: :json,
+            content_type: :json,
+            format: :json
+          ),
+          symbolize_names: true
+        )
+
+        responce_bf = JSON.parse(
+          RestClient.patch(
+            [Settings.torg_url[:host], "tenders", tender_id, "bidders", id].join('/'),
+            bidder: {
+              bidder_files_attributes: {
+                '0' => {
+                  note: note,
+                  tender_file_id: responce_f[:id],
+                  bidder_id: id
+                }
+              }
+            },
+            accept: :json,
+            content_type: :json,
+            format: :json
+          ),
+          symbolize_names: true
+        )
+        responce_bf
       end
     end
   end

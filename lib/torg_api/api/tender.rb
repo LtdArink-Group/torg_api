@@ -134,12 +134,20 @@ module TorgApi
       attr_accessor :offer_reception_place
       # @return [Integer] Часовой пояс проведения закупки
       attr_accessor :local_time_zone_id
-
       # Поиск участника по его идентификатору в справочнике
       # @param contractor_id [Integer] Идентификатор котрагента в справочнике
       # return [Bidder] возвращает объект участника
       def find_bidder(contractor_id)
-        TorgApi::Models::Bidder.where(tender_id: id, contractor_id: contractor_id).first.try(:to_api)
+        responce = JSON.parse(
+          RestClient.get(
+            [Settings.torg_url[:host], "tenders", id, "bidders"].join('/'),
+              accept: :json,
+              content_type: :json,
+              format: :json
+          )
+        )
+        bidder = responce.select { |value| value['contractor_id'] == contractor_id }
+        bidder[0]
       end
 
       def find_lot(num)
@@ -151,7 +159,38 @@ module TorgApi
         # @param id [Integer] id закупки
         # @return [Tender] возвращает объект закупки
         def find(id)
-          TorgApi::Models::Tender.find(id).to_api
+          responce = JSON.parse(
+            RestClient.get(
+              [Settings.torg_url[:host], "tenders", id].join('/'),
+                accept: :json,
+                content_type: :json,
+                format: :json
+            ),
+            symbolize_names: true
+          )
+
+          t = Tender.new
+          t.id = responce[:id]
+          t.num = responce[:num]
+          t.name = responce[:name]
+          t.tender_type_id = responce[:tender_type_id]
+          t.tender_type_explanations = responce[:tender_type_explanations]
+          t.etp_address_id = responce[:etp_address_id]
+          t.commission_id = responce[:commission_id]
+          t.department_id = responce[:department_id]
+          t.announce_date = responce[:announce_date]
+          t.announce_place = responce[:announce_place]
+          t.bid_date = responce[:bid_date]
+          t.bid_place = responce[:bid_place]
+          t.user_id = responce[:user_id]
+          t.oos_num = responce[:oos_num]
+          t.oos_id = responce[:oos_id]
+          t.etp_num = responce[:etp_num]
+          t.order_num = responce[:order_num]
+          t.order_date = responce[:order_date]
+          t.contact_id = responce[:contact_id]
+          t.confirm_place = responce[:confirm_place]
+          t
         end
       end
     end

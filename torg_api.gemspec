@@ -6,7 +6,7 @@ require 'torg_api/version'
 Gem::Specification.new do |spec|
   spec.name          = 'torg_api'
   spec.version       = TorgApi::VERSION
-  spec.authors       = ['Archakov Aleksandr']
+  spec.authors       = ['Archakov Aleksandr', 'Andrew Ageev', 'Dmitrii Bodakov']
   spec.email         = ['archakov@gmail.com']
   spec.description   = %q{API for Torg system}
   spec.summary       = %q{Torg API}
@@ -21,6 +21,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'bundler', '~> 1.3'
   spec.add_development_dependency 'rake', '~> 10.4'
 
-  spec.add_dependency 'activerecord', '~> 4.2'
-  spec.add_dependency 'carrierwave'
+  spec.add_dependency 'rest-client'
 end

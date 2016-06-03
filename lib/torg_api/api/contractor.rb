@@ -46,18 +46,47 @@ module TorgApi
       attr_accessor :jsc_form_id
       # @return [Integer] Малое или среднее предпринимательство
       attr_accessor :sme_type_id
+      # @return [String] ОКТМО
+      attr_accessor :oktmo
+      # @return [String] Дата регистрации юр. лица
+      attr_accessor :reg_date
 
       class << self
         # Поиск id контрагентов по ИНН
         # @param inn [String] ИНН
         # @return [Integer[]] Массив id найденных контрагентов отсортированных по статусу и дате изменения
         def find_by_inn(inn)
-          TorgApi::Models::Contractor
-            .where(inn: inn)
-            .where(next_id: nil)
-            .order("#{DECODE_STATUS_ORDER}, updated_at desc")
-            .first
-            .try(:to_api)
+          responce = JSON.parse(
+            RestClient.get(
+              [Settings.torg_url[:host], "contractors", "find_by_inn"].join('/'),
+                params: { inn: inn },
+                accept: :json,
+                content_type: :json,
+                format: :json
+            ),
+            symbolize_names: true
+          )
+
+          c = new
+          c.name = responce[:name]
+          c.fullname = responce[:fullname]
+          c.ownership = responce[:ownership]
+          c.inn = responce[:inn]
+          c.kpp = responce[:kpp]
+          c.ogrn = responce[:ogrn]
+          c.okpo = responce[:okpo]
+          c.status = responce[:status]
+          c.form = responce[:form]
+          c.legal_addr = responce[:legal_addr]
+          c.user_id = responce[:user_id]
+          c.is_resident = responce[:is_resident]
+          c.is_dzo = responce[:is_dzo]
+          c.is_sme = responce[:is_sme]
+          c.jsc_form_id = responce[:jsc_form_id]
+          c.sme_type_id = responce[:sme_type_id]
+          c.oktmo = responce[:oktmo]
+          c.reg_date = responce[:reg_date]
+          c
         end
 
         # Создаёт контрагента
@@ -66,14 +95,14 @@ module TorgApi
         # @return Contractor
         def create_from_b2b(hash)
           c = Contractor.new
-          c.name = hash[:org_name_short]
+          c.name = hash[:org_name_short].gsub('"','')
           c.fullname = hash[:org_name]
-          c.ownership = extract_ownership(hash[:org_name_short])
           c.inn = hash[:bank_inn]
           c.kpp = hash[:bank_kpp]
           c.ogrn = hash[:ogrn]
           c.okpo = hash[:code_okpo]
-          c.status = 0 # enum status: { orig: 0, active: 1, old: 2, inactive: 3 }
+          c.ownership = extract_ownership(hash[:org_name_short])
+          c.status = 0
           c.form = extract_form(hash[:bank_inn])
           c.legal_addr = hash[:jury_address]
           c.user_id = Settings.service_user[:id]
@@ -82,8 +111,19 @@ module TorgApi
           c.is_sme = hash[:is_smb]
           c.jsc_form_id = nil
           c.sme_type_id = nil
+          c.oktmo = 0
 
-          c.id = TorgApi::Models::Contractor.create(c.to_h).id
+          responce = JSON.parse(
+            RestClient.post(
+              [Settings.torg_url[:host], "contractors"].join('/'),
+                contractor: c.to_h,
+                accept: :json,
+                content_type: :json,
+                format: :json
+            ),
+            symbolize_names: true
+          )
+          c.id = responce[:id]
           c
         end
 
@@ -92,11 +132,10 @@ module TorgApi
         end
 
         def extract_form(bank_inn)
-          # enum form: { businessman: 0, company: 1, foreign: 2, person: 3 }
           case bank_inn.size
-          when 12 then 0
-          when 10 then 1
-          else 2
+          when 12 then "businessman"
+          when 10 then "company"
+          else "foreign"
           end
         end
 

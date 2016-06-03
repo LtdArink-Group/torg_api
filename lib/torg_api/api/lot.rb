@@ -12,7 +12,15 @@ module TorgApi
         # @param id [Integer] id закупки
         # @return [Tender] возвращает объект закупки
         def find(tender_id, num)
-          TorgApi::Models::Lot.where(tender_id: tender_id, num: num).take.to_api
+          responce = JSON.parse(
+            RestClient.get(
+              [Settings.torg_url[:host], "tenders", tender_id].join('/'),
+                accept: :json,
+                content_type: :json,
+                format: :json
+            )
+          )
+          responce['lots'].select { |value| value['num'] == num }.first
         end
       end
     end
