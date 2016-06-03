@@ -23,19 +23,18 @@ require 'torg_api'
 require 'awesome_print'
 require 'logger'
 
-# Параметры подключения к БД
-TorgApi.establish_connection(
-  adapter: 'oracle_enhanced',
-  database: 'ksazd_backup',
-  username: 'user',
-  password: 'pass'
-)
+# Пердварительная настройка
+# Параметры подключения к системе Tender Organizer
+TorgApi::Settings.torg_url_configure(host: 'http://login:password@host:port')
 
-# Логгер если нужен
-TorgApi.logger = Logger.new('queries.log')
+# ИД пользователя в системе Tender Organizer, от имени которого будет работать библиотека
+TorgApi::Settings.service_user_configure(id: user_id)
+
+
+# Пример использования
 
 # Пример поиска по ИНН контрагентов
-ids = TorgApi::Api::Contractor.find_by_inn('7707083893')
+ids = TorgApi::Api::Contractor.find_by_inn('2721124655')
 ap ids
 
 # Пример создания контрагента
@@ -68,8 +67,10 @@ firm_info = {
   is_smb: false
 }
 
-contractor_id = TorgApi::Api::Contractor.create_from_b2b(firm_info, 555)
-ap contractor_id
+b2b_hash = {:firm_id=>"277550", :date_lastedit=>nil, :org_name=>"Общество с ограниченной ответственностью \"АГЕНТСТВО ИНТЕЛЛЕКТУАЛЬНОЙ СОБСТВЕННОСТИ \"ИНСО - ЭНЕРГО\"", :org_name_short=>"ООО \"АИС \"ИНСО - ЭНЕРГО\"", :code_okpo=>"51257002", :bank_name=>nil, :bank_inn=>"7728194072", :ogrn=>"1037739581197", :ogrn_given=>nil, :ogrn_date_given=>nil, :bank_kpp=>"772401001", :bank_bik=>nil, :bank_r_account=>nil, :bank_c_account=>nil, :bank_comments=>nil, :jury_address=>"115201, Россия, г. Москва, Каширское ш., д. 22, корп. 3", :post_address=>"115201, Россия, г. Москва, Каширское ш., д. 22, корп. 3", :fact_address=>"115201, Россия, г. Москва, Каширское ш., д. 22, корп. 3", :site_url=>nil, :certification=>nil, :org_details=>nil, :bank_details=>nil, :country=>643, :is_smb=>false}
+
+# c = TorgApi::Api::Contractor.create_from_b2b(b2b_hash)
+ap с
 ```
 
 ## Documentation
