@@ -68,6 +68,7 @@ module TorgApi
           )
 
           c = new
+          c.id = responce[:id]
           c.name = responce[:name]
           c.fullname = responce[:fullname]
           c.ownership = responce[:ownership]
