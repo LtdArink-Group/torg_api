@@ -54,7 +54,7 @@ module TorgApi
       # return [Boolean]
       def file_exists?(file_name)
         responce = JSON.parse(
-          torg_resource["tenders/#{tender_id}/bidders/#{id}/file_exists"].get(
+          TorgApi::Base.torg_resource["tenders/#{tender_id}/bidders/#{id}/file_exists"].get(
             params: { file_name: file_name },
             accept: :json,
             content_type: :json,
@@ -72,7 +72,7 @@ module TorgApi
       # @return Nothing
       def add_file(file, name = nil, note = nil)
         responce_f = JSON.parse(
-          torg_resource["tender_files"].post(
+          TorgApi::Base.torg_resource["tender_files"].post(
             tender_file: {
               area_id: TenderFileArea::BIDDER,
               year: Date.current.year,
@@ -87,7 +87,7 @@ module TorgApi
         )
 
         responce_bf = JSON.parse(
-          torg_resource["tenders/#{tender_id}/bidders/#{id}"].patch(
+          TorgApi::Base.torg_resource["tenders/#{tender_id}/bidders/#{id}"].patch(
             bidder: {
               bidder_files_attributes: {
                 '0' => {

@@ -139,7 +139,7 @@ module TorgApi
       # return [Bidder] возвращает объект участника
       def find_bidder(contractor_id)
         responce = JSON.parse(
-          torg_resource["tenders/#{id}/bidders"].get(
+          TorgApi::Base.torg_resource["tenders/#{id}/bidders"].get(
               accept: :json,
               content_type: :json,
               format: :json
