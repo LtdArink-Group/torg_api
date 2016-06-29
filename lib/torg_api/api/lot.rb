@@ -17,9 +17,11 @@ module TorgApi
               accept: :json,
               content_type: :json,
               format: :json
-            )
+            ),
+            symbolize_names: true
           )
-          responce['lots'].select { |value| value['num'] == num }.first
+          lot = responce[:lots].select { |value| value[:num] == num }.first
+          new(lot) if lot
         end
       end
     end

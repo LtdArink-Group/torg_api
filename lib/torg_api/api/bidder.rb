@@ -42,11 +42,7 @@ module TorgApi
             symbolize_names: true
           )
 
-          b = new
-          b.tender_id = responce_b[:tender_id]
-          b.contractor_id = responce_b[:contractor_id]
-          b.id = responce_b[:id]
-          b
+          new(responce_b)
         end
       end
       # Проверяет, есть ли файл с таким именем у данного участника

@@ -66,27 +66,7 @@ module TorgApi
             symbolize_names: true
           )
 
-          c = new
-          c.id = responce[:id]
-          c.name = responce[:name]
-          c.fullname = responce[:fullname]
-          c.ownership = responce[:ownership]
-          c.inn = responce[:inn]
-          c.kpp = responce[:kpp]
-          c.ogrn = responce[:ogrn]
-          c.okpo = responce[:okpo]
-          c.status = responce[:status]
-          c.form = responce[:form]
-          c.legal_addr = responce[:legal_addr]
-          c.user_id = responce[:user_id]
-          c.is_resident = responce[:is_resident]
-          c.is_dzo = responce[:is_dzo]
-          c.is_sme = responce[:is_sme]
-          c.jsc_form_id = responce[:jsc_form_id]
-          c.sme_type_id = responce[:sme_type_id]
-          c.oktmo = responce[:oktmo]
-          c.reg_date = responce[:reg_date]
-          c
+          new(responce)
         end
 
         # Создаёт контрагента
