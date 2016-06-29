@@ -181,6 +181,7 @@ module TorgApi
           t.bid_date = responce[:bid_date]
           t.bid_place = responce[:bid_place]
           t.user_id = responce[:user_id]
+          t.user_email = responce[:user_email]
           t.oos_num = responce[:oos_num]
           t.oos_id = responce[:oos_id]
           t.etp_num = responce[:etp_num]
