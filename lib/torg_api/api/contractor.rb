@@ -57,12 +57,11 @@ module TorgApi
         # @return [Integer[]] Массив id найденных контрагентов отсортированных по статусу и дате изменения
         def find_by_inn(inn)
           responce = JSON.parse(
-            RestClient.get(
-              [Settings.torg_url[:host], "contractors", "find_by_inn"].join('/'),
-                params: { inn: inn },
-                accept: :json,
-                content_type: :json,
-                format: :json
+            torg_resource["contractors/find_by_inn"].get(
+              params: { inn: inn },
+              accept: :json,
+              content_type: :json,
+              format: :json
             ),
             symbolize_names: true
           )
@@ -115,12 +114,11 @@ module TorgApi
           c.oktmo = 0
 
           responce = JSON.parse(
-            RestClient.post(
-              [Settings.torg_url[:host], "contractors"].join('/'),
-                contractor: c.to_h,
-                accept: :json,
-                content_type: :json,
-                format: :json
+            torg_resource["contractors"].post(
+              contractor: c.to_h,
+              accept: :json,
+              content_type: :json,
+              format: :json
             ),
             symbolize_names: true
           )

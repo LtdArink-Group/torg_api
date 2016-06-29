@@ -18,8 +18,7 @@ module TorgApi
 
         def create(contractor_id, tender_id, date_offer = nil)
           responce_b = JSON.parse(
-            RestClient.post(
-              [Settings.torg_url[:host], "tenders", tender_id, "bidders"].join('/'),
+            torg_resource["tenders/#{tender_id}/bidders"].post(
               bidder: {
                 tender_id: tender_id,
                 contractor_id: contractor_id,
@@ -55,12 +54,11 @@ module TorgApi
       # return [Boolean]
       def file_exists?(file_name)
         responce = JSON.parse(
-          RestClient.get(
-            [Settings.torg_url[:host], "tenders", tender_id, "bidders", id, "file_exists"].join('/'),
-              params: { file_name: file_name },
-              accept: :json,
-              content_type: :json,
-              format: :json
+          torg_resource["tenders/#{tender_id}/bidders/#{id}/file_exists"].get(
+            params: { file_name: file_name },
+            accept: :json,
+            content_type: :json,
+            format: :json
           ),
           symbolize_names: true
         )
@@ -74,8 +72,7 @@ module TorgApi
       # @return Nothing
       def add_file(file, name = nil, note = nil)
         responce_f = JSON.parse(
-          RestClient.post(
-            [Settings.torg_url[:host], "tender_files"].join('/'),
+          torg_resource["tender_files"].post(
             tender_file: {
               area_id: TenderFileArea::BIDDER,
               year: Date.current.year,
@@ -90,8 +87,7 @@ module TorgApi
         )
 
         responce_bf = JSON.parse(
-          RestClient.patch(
-            [Settings.torg_url[:host], "tenders", tender_id, "bidders", id].join('/'),
+          torg_resource["tenders/#{tender_id}/bidders/#{id}"].patch(
             bidder: {
               bidder_files_attributes: {
                 '0' => {

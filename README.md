@@ -25,7 +25,7 @@ require 'logger'
 
 # Пердварительная настройка
 # Параметры подключения к системе Tender Organizer
-TorgApi::Settings.torg_url_configure(host: 'http://login:password@host:port')
+TorgApi::Settings.torg_url_configure(host: 'http://login:password@host:port', ssl: { verify_ssl: OpenSSL::SSL::VERIFY_NONE })
 
 # ИД пользователя в системе Tender Organizer, от имени которого будет работать библиотека
 TorgApi::Settings.service_user_configure(id: user_id)

@@ -139,8 +139,7 @@ module TorgApi
       # return [Bidder] возвращает объект участника
       def find_bidder(contractor_id)
         responce = JSON.parse(
-          RestClient.get(
-            [Settings.torg_url[:host], "tenders", id, "bidders"].join('/'),
+          torg_resource["tenders/#{id}/bidders"].get(
               accept: :json,
               content_type: :json,
               format: :json
@@ -160,11 +159,10 @@ module TorgApi
         # @return [Tender] возвращает объект закупки
         def find(id)
           responce = JSON.parse(
-            RestClient.get(
-              [Settings.torg_url[:host], "tenders", id].join('/'),
-                accept: :json,
-                content_type: :json,
-                format: :json
+            torg_resource["tenders/#{id}"].get(
+              accept: :json,
+              content_type: :json,
+              format: :json
             ),
             symbolize_names: true
           )
