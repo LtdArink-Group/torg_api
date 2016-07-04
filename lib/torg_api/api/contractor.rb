@@ -63,10 +63,11 @@ module TorgApi
               content_type: :json,
               format: :json
             ),
-            symbolize_names: true
+            symbolize_names: true,
+            quirks_mode: true
           )
 
-          new(responce)
+          responce && new(responce)
         end
 
         # Создаёт контрагента
