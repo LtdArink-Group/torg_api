@@ -18,8 +18,7 @@ module TorgApi
 
         def create(contractor_id, tender_id, date_offer = nil)
           responce_b = JSON.parse(
-            RestClient.post(
-              [Settings.torg_url[:host], "tenders", tender_id, "bidders"].join('/'),
+            torg_resource["tenders/#{tender_id}/bidders"].post(
               bidder: {
                 tender_id: tender_id,
                 contractor_id: contractor_id,
@@ -43,11 +42,7 @@ module TorgApi
             symbolize_names: true
           )
 
-          b = new
-          b.tender_id = responce_b[:tender_id]
-          b.contractor_id = responce_b[:contractor_id]
-          b.id = responce_b[:id]
-          b
+          new(responce_b)
         end
       end
       # Проверяет, есть ли файл с таким именем у данного участника
@@ -55,12 +50,11 @@ module TorgApi
       # return [Boolean]
       def file_exists?(file_name)
         responce = JSON.parse(
-          RestClient.get(
-            [Settings.torg_url[:host], "tenders", tender_id, "bidders", id, "file_exists"].join('/'),
-              params: { file_name: file_name },
-              accept: :json,
-              content_type: :json,
-              format: :json
+          TorgApi::Base.torg_resource["tenders/#{tender_id}/bidders/#{id}/file_exists"].get(
+            params: { file_name: file_name },
+            accept: :json,
+            content_type: :json,
+            format: :json
           ),
           symbolize_names: true
         )
@@ -79,8 +73,7 @@ module TorgApi
           { document: File.open(file) }
         end
         responce_f = JSON.parse(
-          RestClient.post(
-            [Settings.torg_url[:host], "tender_files"].join('/'),
+          TorgApi::Base.torg_resource["tender_files"].post(
             tender_file: {
               area_id: TenderFileArea::BIDDER,
               year: Date.current.year,
@@ -94,8 +87,7 @@ module TorgApi
         )
 
         responce_bf = JSON.parse(
-          RestClient.patch(
-            [Settings.torg_url[:host], "tenders", tender_id, "bidders", id].join('/'),
+          TorgApi::Base.torg_resource["tenders/#{tender_id}/bidders/#{id}"].patch(
             bidder: {
               bidder_files_attributes: {
                 '0' => {

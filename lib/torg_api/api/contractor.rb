@@ -57,36 +57,17 @@ module TorgApi
         # @return [Integer[]] Массив id найденных контрагентов отсортированных по статусу и дате изменения
         def find_by_inn(inn)
           responce = JSON.parse(
-            RestClient.get(
-              [Settings.torg_url[:host], "contractors", "find_by_inn"].join('/'),
-                params: { inn: inn },
-                accept: :json,
-                content_type: :json,
-                format: :json
+            torg_resource["contractors/find_by_inn"].get(
+              params: { inn: inn },
+              accept: :json,
+              content_type: :json,
+              format: :json
             ),
-            symbolize_names: true
+            symbolize_names: true,
+            quirks_mode: true
           )
 
-          c = new
-          c.name = responce[:name]
-          c.fullname = responce[:fullname]
-          c.ownership = responce[:ownership]
-          c.inn = responce[:inn]
-          c.kpp = responce[:kpp]
-          c.ogrn = responce[:ogrn]
-          c.okpo = responce[:okpo]
-          c.status = responce[:status]
-          c.form = responce[:form]
-          c.legal_addr = responce[:legal_addr]
-          c.user_id = responce[:user_id]
-          c.is_resident = responce[:is_resident]
-          c.is_dzo = responce[:is_dzo]
-          c.is_sme = responce[:is_sme]
-          c.jsc_form_id = responce[:jsc_form_id]
-          c.sme_type_id = responce[:sme_type_id]
-          c.oktmo = responce[:oktmo]
-          c.reg_date = responce[:reg_date]
-          c
+          responce && new(responce)
         end
 
         # Создаёт контрагента
@@ -114,12 +95,11 @@ module TorgApi
           c.oktmo = 0
 
           responce = JSON.parse(
-            RestClient.post(
-              [Settings.torg_url[:host], "contractors"].join('/'),
-                contractor: c.to_h,
-                accept: :json,
-                content_type: :json,
-                format: :json
+            torg_resource["contractors"].post(
+              contractor: c.to_h,
+              accept: :json,
+              content_type: :json,
+              format: :json
             ),
             symbolize_names: true
           )

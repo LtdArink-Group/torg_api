@@ -13,14 +13,15 @@ module TorgApi
         # @return [Tender] возвращает объект закупки
         def find(tender_id, num)
           responce = JSON.parse(
-            RestClient.get(
-              [Settings.torg_url[:host], "tenders", tender_id].join('/'),
-                accept: :json,
-                content_type: :json,
-                format: :json
-            )
+            torg_resource["tenders/#{tender_id}"].get(
+              accept: :json,
+              content_type: :json,
+              format: :json
+            ),
+            symbolize_names: true
           )
-          responce['lots'].select { |value| value['num'] == num }.first
+          lot = responce[:lots].select { |value| value[:num] == num }.first
+          new(lot) if lot
         end
       end
     end
