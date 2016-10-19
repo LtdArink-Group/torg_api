@@ -67,14 +67,18 @@ module TorgApi
       # @param note [String] Комментарии
       # @return Nothing
       def add_file(file, name = nil, note = nil)
+        document = if file.start_with?('http')
+          { remote_document_url: file }
+        else
+          { document: File.open(file) }
+        end
         responce_f = JSON.parse(
           TorgApi::Base.torg_resource["tender_files"].post(
             tender_file: {
               area_id: TenderFileArea::BIDDER,
               year: Date.current.year,
-              document: File.open(file),
               external_filename: name
-            },
+            }.merge(document),
             accept: :json,
             content_type: :json,
             format: :json
