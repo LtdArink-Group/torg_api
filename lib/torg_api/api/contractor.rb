@@ -55,10 +55,10 @@ module TorgApi
         # Поиск id контрагентов по ИНН
         # @param inn [String] ИНН
         # @return [Integer[]] Массив id найденных контрагентов отсортированных по статусу и дате изменения
-        def find_by_inn(inn)
+        def find_by_inn(inn, kpp = nil)
           responce = JSON.parse(
             torg_resource["contractors/find_by_inn"].get(
-              params: { inn: inn },
+              params: { inn: inn, kpp: kpp },
               accept: :json,
               content_type: :json,
               format: :json
