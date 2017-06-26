@@ -7,10 +7,10 @@ Gem::Specification.new do |spec|
   spec.name          = 'torg_api'
   spec.version       = TorgApi::VERSION
   spec.authors       = ['Archakov Aleksandr', 'Andrew Ageev', 'Dmitrii Bodakov']
-  spec.email         = ['archakov@gmail.com']
+  spec.email         = ['bodakovda@arink-group.ru']
   spec.description   = %q{API for Torg system}
   spec.summary       = %q{Torg API}
-  spec.homepage      = 'https://github.com/kodram/torg_api'
+  spec.homepage      = 'https://github.com/LtdArink-Group/torg_api/'
   spec.license       = 'MIT'
 
   spec.files         = `git ls-files`.split($RS)
