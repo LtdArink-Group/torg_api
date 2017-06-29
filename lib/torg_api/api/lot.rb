@@ -6,7 +6,8 @@ module TorgApi
       attr_accessor :id
       # @return [Integer] Номер
       attr_accessor :num
-
+      # @return [Array] Спецификации
+      attr_accessor :specifications
       class << self
         # Поиск закупки по id
         # @param id [Integer] id закупки
