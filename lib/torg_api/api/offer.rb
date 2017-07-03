@@ -54,6 +54,23 @@ module TorgApi
           new(responce_o)
         end
 
+        def find(tender_id, bidder_id, lot_id, offer_num, spec_id)
+          responce = JSON.parse(
+            torg_resource["tenders/#{tender_id}/bidders/#{bidder_id}/offers"].get(
+              accept: :json,
+              content_type: :json,
+              format: :json
+            ),
+            symbolize_names: true
+          )
+          offer = responce.select { |value|
+            value[:lot_id] == lot_id &&
+            value[:num] == offer_num &&
+            value[:offer_specifications][0][:offer_specification][:specification_id] == spec_id
+          }
+          offer
+        end
+
       end
     end
   end
