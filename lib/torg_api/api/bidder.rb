@@ -8,8 +8,6 @@ module TorgApi
       attr_accessor :contractor_id
       # @return [Integer] ID закупки
       attr_accessor :tender_id
-      # @return [Array] Предложения участников
-      attr_accessor :offers
 
       class << self
         # Создаёт участника в системе и возвращает его id
