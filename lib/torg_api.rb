@@ -1,3 +1,4 @@
+require 'json'
 require 'rest-client'
 require 'torg_api/settings'
 require 'torg_api/version'
