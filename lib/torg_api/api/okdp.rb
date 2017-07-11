@@ -24,7 +24,7 @@ module TorgApi
             ),
             symbolize_names: true
           )
-          okdp = new(responce[:okdp])
+          new(responce[:okdp])
         end
 
       end
