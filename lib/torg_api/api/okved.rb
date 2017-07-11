@@ -24,7 +24,7 @@ module TorgApi
             ),
             symbolize_names: true
           )
-          okved = new(responce[:okved])
+          new(responce[:okved])
         end
 
       end
