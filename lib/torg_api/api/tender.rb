@@ -172,6 +172,19 @@ module TorgApi
 
           new(responce)
         end
+        # Поиск закупки по guid запланированного лота
+        # @param guid [Guid] guid запланированного лота
+        # @return [Tender] возвращает объект закупки
+        def find_by_guid(guid)
+          responce = JSON.parse(
+            torg_resource["tenders?tender_filter[plan_lot_guid=#{guid}"].get(
+              accept: :json,
+              content_type: :json,
+              format: :json
+            ),
+            symbolize_names: true
+          )
+        end
       end
     end
   end
