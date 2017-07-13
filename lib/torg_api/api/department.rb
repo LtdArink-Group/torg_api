@@ -52,6 +52,7 @@ module TorgApi
             ),
             symbolize_names: true
           )
+          new(responce[:department])
         end
       end
     end
