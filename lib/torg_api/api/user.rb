@@ -35,6 +35,7 @@ module TorgApi
             ),
             symbolize_names: true
           )
+          new(responce)
         end
       end
     end
