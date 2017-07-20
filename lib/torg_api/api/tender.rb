@@ -172,6 +172,22 @@ module TorgApi
 
           new(responce)
         end
+
+        def update_etp_num(tender_id, etp_num)
+          responce = JSON.parse(
+            torg_resource["tenders/#{tender_id}"].patch(
+              tender: {
+                etp_num: etp_num
+              },
+              accept: :json,
+              content_type: :json,
+              format: :json
+            ),
+            symbolize_names: true
+          )
+          new(responce)
+        end
+
         # Поиск закупки по guid запланированного лота
         # @param guid [Guid] guid запланированного лота
         # @return [Tender] возвращает объект закупки
