@@ -136,6 +136,8 @@ module TorgApi
       attr_accessor :local_time_zone_id
       # @return [Array] Лоты
       attr_accessor :lots
+      # @return [Array] Файлы
+      attr_accessor :link_tender_files
       # Поиск участника по его идентификатору в справочнике
       # @param contractor_id [Integer] Идентификатор котрагента в справочнике
       # return [Bidder] возвращает объект участника
