@@ -27,6 +27,18 @@ module TorgApi
           new(responce[:okdp])
         end
 
+        def find_old_code(new_value)
+          JSON.parse(
+            torg_resource["okdp/reform_old_value"].get(
+              params: { new_value: new_value },
+              accept: :json,
+              content_type: :json,
+              format: :json
+            ),
+            symbolize_names: true
+          )
+        end
+
       end
     end
   end
