@@ -133,6 +133,8 @@ module TorgApi
       # @return [String] Место предоставления конвертов
       attr_accessor :offer_reception_place
       # @return [Integer] Часовой пояс проведения закупки
+      attr_accessor :b2b_classifiers
+      # @return [integer] Классификатор B2B-Center
       attr_accessor :local_time_zone_id
       # @return [Array] Лоты
       attr_accessor :lots
