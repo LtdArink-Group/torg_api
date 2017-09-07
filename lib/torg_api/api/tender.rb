@@ -12,6 +12,8 @@ module TorgApi
       attr_accessor :tender_type_id
       # @return [String] Наименование способа закупки
       attr_accessor :tender_type_name
+      # @return [String] Полное наименование способа закупки
+      attr_accessor :tender_type_fullname
       # @return [String] Обоснование выбора способа
       attr_accessor :tender_type_explanations
       # @return [Integer] Адрес ЭТП

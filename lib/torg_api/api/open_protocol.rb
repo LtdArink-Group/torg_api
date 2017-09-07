@@ -46,7 +46,11 @@ module TorgApi
                 open_date: params[:date],
                 sign_city: params[:place],
                 sign_date: params[:sign_protocol_date],
-                compound_open_date: params[:procedure_stage_date]
+                compound_open_date: params[:procedure_stage_date],
+                commission_id: params[:commission_id],
+                resolve: params[:resolve],
+                location: params[:location],
+                clerk_id: params[:clerk_id]
               },
               accept: :json,
               content_type: :json,
