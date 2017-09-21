@@ -154,7 +154,7 @@ module TorgApi
           ),
           symbolize_names: true
         )
-        bidder = responce.select { |value| value[:contractor_id] == contractor_id }[0]
+        bidder = responce.select { |value| value[:bidder][:contractor_id] == contractor_id }[0][:bidder]
         Bidder.new(bidder) if bidder
       end
 
