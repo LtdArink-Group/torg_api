@@ -154,8 +154,8 @@ module TorgApi
           ),
           symbolize_names: true
         )
-        bidder = responce.select { |value| value[:bidder][:contractor_id] == contractor_id }[0][:bidder]
-        Bidder.new(bidder) if bidder
+        bidder = responce.select { |value| value[:bidder][:contractor_id] == contractor_id }[0]
+        Bidder.new(bidder[:bidder]) if bidder
       end
 
       def find_lot(num)
