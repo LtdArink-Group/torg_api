@@ -1,3 +1,4 @@
+
 module TorgApi
   module Api
     # Оферта участника
@@ -66,7 +67,8 @@ module TorgApi
           offer = responce.select { |value|
             value[:lot_id] == lot_id &&
             value[:num] == offer_num &&
-            value[:offer_specifications][0][:offer_specification][:specification_id] == spec_id
+            value[:version] == 0 &&
+            value[:offer_specifications][0][:specification_id] == spec_id
           }
           offer
         end
