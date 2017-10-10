@@ -43,7 +43,7 @@ module TorgApi
               open_protocol: {
                 tender_id: tender_id,
                 num: params[:number],
-                open_date: params[:date],
+                open_date: params[:procedure_stage_date],
                 sign_city: params[:place],
                 sign_date: params[:sign_protocol_date],
                 compound_open_date: params[:procedure_stage_date],
