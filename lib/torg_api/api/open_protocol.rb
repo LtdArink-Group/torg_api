@@ -48,8 +48,8 @@ module TorgApi
                 sign_date: params[:sign_protocol_date],
                 compound_open_date: params[:procedure_stage_date],
                 compound_open_date_attributes: {
-                  date: DateTime.parse(params[:procedure_stage_date]).to_date,
-                  time: DateTime.parse(params[:procedure_stage_date]).strftime("%H:%M")
+                  date: params[:procedure_stage_date].to_date,
+                  time: params[:procedure_stage_date].strftime("%H:%M")
                 },
                 commission_id: params[:commission_id],
                 resolve: params[:resolve],
