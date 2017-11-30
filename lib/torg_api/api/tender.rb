@@ -137,6 +137,8 @@ module TorgApi
       # @return [Integer] Часовой пояс проведения закупки
       attr_accessor :b2b_classifiers
       # @return [integer] Классификатор B2B-Center
+      attr_accessor :price_begin_limited
+      # @return [Boolean] Ограничивать предложения указанной в извещении стоимостью
       attr_accessor :local_time_zone_id
       # @return [Array] Лоты
       attr_accessor :lots
