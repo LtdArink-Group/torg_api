@@ -52,9 +52,9 @@ module TorgApi
       attr_accessor :reg_date
 
       class << self
-        # Поиск id контрагентов по ИНН
+        # Поиск контрагента по ИНН
         # @param inn [String] ИНН
-        # @return [Integer[]] Массив id найденных контрагентов отсортированных по статусу и дате изменения
+        # @return [Contractor] Контрагент
         def find_by_inn(inn, kpp = nil)
           responce = JSON.parse(
             torg_resource["contractors/find_by_inn"].get(
@@ -68,6 +68,24 @@ module TorgApi
           )
 
           responce && new(responce)
+        end
+
+        # Поиск контрагентов по id
+        # @param id [Integer] id контрагента
+        # @return [Contractor] Контрагент
+        def find_by_id(id)
+          responce = JSON.parse(
+            torg_resource["contractors/#{id}"].get(
+              params: {},
+              accept: :json,
+              content_type: :json,
+              format: :json
+            ),
+            symbolize_names: true,
+            quirks_mode: true
+          )
+
+          responce[:contractor] && new(responce[:contractor])
         end
 
         # Создаёт контрагента
